@@ -38,6 +38,19 @@ app.get('/productos', (req, res) => {
         res.json(results);
     });
 });
+// Ruta para obtener la información de un producto por su ID
+app.get('/productos/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'SELECT * FROM productos WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+        if (err) throw err;
+        if (results.length > 0) {
+            res.json(results[0]); // Devuelve solo el primer resultado
+        } else {
+            res.status(404).json({ message: 'Producto no encontrado' });
+        }
+    });
+});
 
 const port = 3000;
 app.listen(port, () => console.log(`Servidor corriendo en http://localhost:${port}`));

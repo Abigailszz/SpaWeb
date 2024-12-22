@@ -6,6 +6,9 @@
     --clr-white: #ececec;
     --clr-gray: #e2e2e2;
     --clr-red: #f68487;
+    --gradient-bg: linear-gradient(to right, rgb(254, 140, 140), rgb(245, 170, 188));
+
+    
 }
 
 * {
@@ -432,3 +435,228 @@ main {
         grid-template-columns: 1fr;
     }
 }
+
+
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro translúcido más elegante */
+    backdrop-filter: blur(10px); /* Aumento del desenfoque para mayor suavidad */
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 40px;
+    border: none;
+    width: 70%;
+    max-width: 600px;
+    border-radius: 20px; /* Bordes más redondeados */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Sombra más suave y grande */
+    animation: slideDown 0.4s ease-out; /* Animación más suave al abrir */
+    overflow: hidden; /* Evita el desbordamiento del contenido */
+}
+
+/* Título */
+.modal-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px; /* Espacio entre el título y la descripción */
+    text-align: center; /* Centrado del título */
+}
+
+/* Descripción */
+.modal-content p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px; /* Espacio entre la descripción y el botón */
+    line-height: 1.5; /* Mejora la legibilidad */
+}
+
+/* Estilo para el botón */
+.modal-content button {
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(to right,rgb(254, 140, 140),rgb(245, 170, 188)); /* Degradado más atractivo */
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 20px; /* Espacio superior para el botón */
+}
+
+/* Efecto hover en el botón */
+.modal-content button:hover {
+    background: linear-gradient(to right, rgb(254, 140, 140),rgb(245, 170, 188)); /* Cambia el degradado en hover */
+    transform: scale(1.1); /* Aumento más pronunciado al pasar el ratón */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra suave al hacer hover */
+}
+
+/* Cerrar el modal */
+.close {
+    color: #333;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #ff6b6b; /* Cambia el color al pasar el cursor */
+    text-decoration: none;
+}
+
+/* Animación del modal */
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}/* Estilo para el segundo modal (Calendario) */
+/* Estilo para el segundo modal (Calendario) */
+#calendarModal .modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 40px;
+    border: none;
+    width: 60%;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.4s ease-out;
+}
+
+/* Estilo para el calendario */
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columnas para los días de la semana */
+    gap: 5px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#calendar .week-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Asegura que los días estén alineados horizontalmente */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.day-header {
+    font-weight: bold;
+    text-align: center;
+    background-color: #e0e0e0; /* Fondo claro para los encabezados */
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Estilo para las celdas de los días */
+#calendar div {
+    text-align: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calendar div:hover {
+    background-color: #ddd;
+}
+
+#calendar .today {
+    background-color: #ff7eb9;
+    color: white;
+}
+
+/* Estilo para los botones dentro del segundo modal */
+#calendarModal button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--gradient-bg);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin: 10px;
+}
+
+#calendarModal button:hover {
+    background: var(--gradient-bg);
+    transform: scale(1.05);
+}
+
+#calendarModal button:hover {
+    background: var(--gradient-bg);
+    transform: scale(1.05);
+}
+
+#timeSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaciado entre los elementos */
+    margin-top: 20px;
+    align-items: center; /* Centrar elementos horizontalmente */
+}
+
+#timeSelector label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Color de texto elegante */
+}
+
+#timeSelector select {
+    width: 80%; /* Ancho ajustable */
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+#timeSelector select:focus {
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efecto al enfocar */
+}
+
+/* Día seleccionado */
+#calendar .selected {
+    background-color: #ffe4e1; /* Rosa claro */
+    color: #000; /* Color de texto negro */
+    font-weight: bold;
+    border: 1px solid #ff7eb9; /* Borde para resaltar */
+}
+/* Estilo simple para los botones de flecha */
+#prevMonthBtn, #nextMonthBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+
