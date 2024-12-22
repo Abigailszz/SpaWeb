@@ -1,4 +1,5 @@
 let productos = [];
+let productoSeleccionadoId = null;
 
 fetch("http://localhost:3000/productos") // Cambia la URL al endpoint del backend
     .then(response => response.json())
@@ -74,13 +75,13 @@ function actualizarBotonesAgregar() {
     botonesAgregar = document.querySelectorAll(".producto-agregar ");
     botonesAgregar.forEach(boton => {
         boton.addEventListener("click", (e) => {
-            const productId = e.currentTarget.id;
+            productoSeleccionadoId= e.currentTarget.id;
 
             // Agregar al carrito
             agregarAlCarrito(e);
 
             // Abrir el modal
-            openProductModal(productId);
+            openProductModal(productoSeleccionadoId);
         });
     });
 }
@@ -108,6 +109,7 @@ function openProductModal(productId) {
 document.getElementById("closeModal").onclick = function () {
     document.getElementById("productModal").style.display = "none";
 };
+
 
 let productosEnCarrito;
 
@@ -220,6 +222,7 @@ function generateCalendar() {
     for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement("div");
         dayCell.textContent = day;
+      
 
         // Añadir evento de clic para seleccionar el día
         dayCell.addEventListener("click", function() {
@@ -288,6 +291,48 @@ saveBtn.addEventListener("click", function() {
         const selectedTime = timeSelector.value;
         alert(`Fecha seleccionada: ${selectedDate.textContent}, Hora: ${selectedTime}`);
         calendarModal.style.display = "none"; // Oculta el calendario después de guardar
+    } else {
+        alert("Por favor, selecciona una fecha.");
+    }
+});
+
+// Guardar la selección de la fecha y hora
+saveBtn.addEventListener("click", function() {
+    if (selectedDate) {
+        const selectedTime = timeSelector.value;
+        const selectedDateStr = `${currentYear}-${currentMonth + 1}-${selectedDate.textContent}`; // Formato de fecha "YYYY-MM-DD"
+        console.log(selectedDateStr);
+        // Datos que se van a enviar a la base de datos
+        const turnoData = {
+            clienteId: 1, // Reemplazar con el ID real del cliente
+            servicioId: productoSeleccionadoId, // Reemplazar con el ID real del servicio
+            fecha: selectedDateStr, // Fecha seleccionada
+            hora: selectedTime, // Hora seleccionada
+            estado: false, // Estado del turno, false por defecto (puede ser un valor dinámico)
+            metodopago:"mercado"
+        };
+       
+
+        // Realizar la solicitud POST al servidor
+        fetch('http://localhost:3000/turnos/guardar-turno', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(turnoData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Mensaje de éxito
+                calendarModal.style.display = "none"; // Cerrar el calendario después de guardar
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar el turno:', error);
+            alert('Hubo un error al guardar el turno');
+        });
+        
     } else {
         alert("Por favor, selecciona una fecha.");
     }

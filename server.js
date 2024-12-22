@@ -52,6 +52,27 @@ app.get('/productos/:id', (req, res) => {
     });
 });
 
+// Ruta para guardar un turno
+app.post('/turnos/guardar-turno', (req, res) => {
+    const { clienteId, servicioId, fecha, hora, estado,metodopago } = req.body;
+
+    // Consulta SQL para insertar un turno
+    const query = `
+        INSERT INTO turnos (id_cliente, id_servicio, fecha, hora, estado,metodo_pago)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(query, [clienteId, servicioId, fecha, hora, estado,metodopago], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Error al guardar el turno' });
+        } else {
+            res.status(201).json({ message: 'Turno guardado exitosamente', turnoId: result.insertId });
+        }
+    });
+});
+
+
 const port = 3000;
 app.listen(port, () => console.log(`Servidor corriendo en http://localhost:${port}`));
 
