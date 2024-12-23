@@ -71,6 +71,35 @@ app.post('/turnos/guardar-turno', (req, res) => {
         }
     });
 });
+app.get('/turnos/reservados', (req, res) => {
+    const query = `
+        SELECT fecha, hora 
+        FROM turnos 
+        WHERE estado = 1
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al realizar la consulta:', err);
+            return res.status(500).json({ message: 'Error al obtener los turnos disponibles' });
+        }
+
+        if (results.length === 0) {
+            console.log('No se encontraron turnos disponibles.');
+            return res.json([]); // Devuelve un array vacío si no hay resultados
+        }
+
+        // Convertimos la fecha y hora a un formato más fácil de manejar
+        const reservedSlots = results.map(turno => {
+            const date = new Date(turno.fecha);
+            const hour = turno.hora.split(':')[0] + ":" + turno.hora.split(':')[1];  // Formato HH:mm
+            return { date: date.toISOString().split('T')[0], hour }; // Devuelve solo la fecha (YYYY-MM-DD) y la hora (HH:mm)
+        });
+
+        console.log('Turnos reservados:', reservedSlots);
+        res.json(reservedSlots); // Devuelve las fechas y horas reservadas
+    });
+});
 
 
 const port = 3000;

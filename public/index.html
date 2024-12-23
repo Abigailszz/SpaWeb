@@ -100,13 +100,13 @@
 <div id="calendarModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span id="closeCalendarModal" class="close">&times;</span>
-        <h2>Selecciona una fecha y hora</h2>
+     <h4>Selecciona una fecha</h4>
 
         <!-- Selector de mes y año -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
-            <button id="prevMonthBtn" class="circle-btn">‹</button>
+            <button id="prevMonthBtn" >‹</button>
             <span id="monthYear"></span>
-            <button id="nextMonthBtn" class="circle-btn">›</button>
+            <button id="nextMonthBtn" >›</button>
         </div>
         
 
@@ -117,17 +117,27 @@
         <div id="timeSelector" style="margin-top: 20px;">
             <label for="time">Selecciona una hora: </label>
             <select id="time">
-                <option value="09:00">09:00</option>
-                <option value="10:00">10:00</option>
-                <option value="11:00">11:00</option>
-                <option value="12:00">12:00</option>
-                <option value="13:00">13:00</option>
-                <option value="14:00">14:00</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
+
             </select>
         </div>
 
+       <div id="paymentSection">
+            <h4>Seleccione un método de pago</h4>
+            <div id="paymentMethods" style="margin-top: 10px;">
+                <label style="margin-right: 15px;">
+                    <input type="radio" name="paymentMethod" value="transferencia" />
+                    Transferencia
+                </label>
+                <label style="margin-right: 15px;">
+                    <input type="radio" name="paymentMethod" value="efectivo" />
+                    Efectivo
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="tarjeta" />
+                    Tarjeta
+                </label>
+            </div>
+        </div>
         <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
             <button id="saveBtn">Guardar</button>
             <button id="closeCalendarBtn">Cerrar</button>

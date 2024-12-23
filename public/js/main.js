@@ -1,6 +1,49 @@
+//VARIABLES GLOBALES
 let productos = [];
 let productoSeleccionadoId = null;
+let diaSeleccionado = null; //  la fecha seleccionada
 
+// Variables para el calendario
+let selectedDate = null;
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let reservedSlots = []; // Para almacenar las fechas y horas reservadas
+
+
+//ELEMENTOS DEL DOM
+const contenedorProductos = document.querySelector("#contenedor-productos");
+const botonesCategorias = document.querySelectorAll(".boton-categoria");
+const tituloPrincipal = document.querySelector("#titulo-principal");
+let botonesAgregar = document.querySelectorAll(".producto-agregar");
+const numerito = document.querySelector("#numerito");
+
+//MODAL DEL PRODUCTO
+const reservarBtn = document.getElementById("reservarBtn");
+const calendarModal = document.getElementById("calendarModal");
+const closeCalendarModal = document.getElementById("closeCalendarModal");
+const closeCalendarBtn = document.getElementById("closeCalendarBtn");
+const saveBtn = document.getElementById("saveBtn");
+
+//ELEMENTOS DEL CALENDARIO 
+const prevMonthBtn = document.getElementById("prevMonthBtn");
+const nextMonthBtn = document.getElementById("nextMonthBtn");
+const monthYear = document.getElementById("monthYear");
+const calendarElement = document.getElementById("calendar");
+const timeSelector = document.getElementById("time");
+
+//VARIABLES PARA EL CARRITO 
+let productosEnCarrito = [];
+let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
+
+//INICIALIZACION 
+if (productosEnCarritoLS) {
+    productosEnCarrito = JSON.parse(productosEnCarritoLS);
+    actualizarNumerito();
+} else {
+    productosEnCarrito = [];
+}
+
+// Fetch inicial de productos
 fetch("http://localhost:3000/productos") // Cambia la URL al endpoint del backend
     .then(response => response.json())
     .then(data => {
@@ -8,29 +51,15 @@ fetch("http://localhost:3000/productos") // Cambia la URL al endpoint del backen
         cargarProductos(productos);
     });
 
-
-
-// por id y por clase llama
-//querySelectorAll-> selecciona todo. Ej: .boton-categoria (selecciona todos los botones)
-//querySelector-> selecciona el primero 
-const contenedorProductos = document.querySelector("#contenedor-productos");
-const botonesCategorias = document.querySelectorAll(".boton-categoria");
-const tituloPrincipal = document.querySelector("#titulo-principal");
-let botonesAgregar = document.querySelectorAll(".producto-agregar");
-const numerito = document.querySelector("#numerito");
-
 //sirve en version celular 
 botonesCategorias.forEach(boton => boton.addEventListener("click", () => {
     aside.classList.remove("aside-visible");
 }))
 
-
+// Función para cargar productos
 function cargarProductos(productosElegidos) {
-
     contenedorProductos.innerHTML = "";
-
     productosElegidos.forEach(producto => {
-
         const div = document.createElement("div");
         div.classList.add("producto");
         div.innerHTML = `
@@ -39,38 +68,13 @@ function cargarProductos(productosElegidos) {
                 <h3 class="producto-titulo">${producto.titulo}</h3>
                 <p class="producto-precio">$${producto.precio}</p>
                 <button class="producto-agregar" id="${producto.id}">Agregar</button>
-            </div>
-            
+            </div>  
         `;
-
         contenedorProductos.append(div);
     })
-
     actualizarBotonesAgregar();
 }
-
-//filtra los productos por categoria 
-botonesCategorias.forEach(boton => {
-    boton.addEventListener("click", (e) => {
-
-        botonesCategorias.forEach(boton => boton.classList.remove("active"));
-        e.currentTarget.classList.add("active");
-
-        if (e.currentTarget.id != "todos") {
-            const productoCategoria = productos.find(producto => producto.categoria_id === e.currentTarget.id);
-            tituloPrincipal.innerText = productoCategoria.categoria_nombre;
-            console.log("ID del botón:", e.currentTarget.id, typeof e.currentTarget.id);
-            const productosBoton = productos.filter(producto => producto.categoria_id === e.currentTarget.id);
-            cargarProductos(productosBoton);
-
-        } else {
-            tituloPrincipal.innerText = "Todos los Servicio";
-            cargarProductos(productos);
-        }
-
-    })
-});
-
+// Función para actualizar botones "Agregar"
 function actualizarBotonesAgregar() {
     botonesAgregar = document.querySelectorAll(".producto-agregar ");
     botonesAgregar.forEach(boton => {
@@ -86,6 +90,7 @@ function actualizarBotonesAgregar() {
     });
 }
 
+// Modal de producto
 function openProductModal(productId) {
     fetch(`http://localhost:3000/productos/${Number(productId)}`)
         .then(response => response.json())
@@ -105,22 +110,6 @@ function openProductModal(productId) {
         .catch(error => console.error("Error al cargar el producto:", error));
 }
 
-// Cerrar el modal
-document.getElementById("closeModal").onclick = function () {
-    document.getElementById("productModal").style.display = "none";
-};
-
-
-let productosEnCarrito;
-
-let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
-
-if (productosEnCarritoLS) {
-    productosEnCarrito = JSON.parse(productosEnCarritoLS);
-    actualizarNumerito();
-} else {
-    productosEnCarrito = [];
-}
 
 function agregarAlCarrito(e) {
 
@@ -156,9 +145,7 @@ function agregarAlCarrito(e) {
         productoAgregado.cantidad = 1;
         productosEnCarrito.push(productoAgregado);
     }
-
     actualizarNumerito();
-
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
 }
 
@@ -166,25 +153,35 @@ function actualizarNumerito() {
     let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
     numerito.innerText = nuevoNumerito;
 
-}// Obtener elementos del DOM
-const reservarBtn = document.getElementById("reservarBtn");
-const calendarModal = document.getElementById("calendarModal");
-const closeCalendarModal = document.getElementById("closeCalendarModal");
-const closeCalendarBtn = document.getElementById("closeCalendarBtn");
-const saveBtn = document.getElementById("saveBtn");
-const prevMonthBtn = document.getElementById("prevMonthBtn");
-const nextMonthBtn = document.getElementById("nextMonthBtn");
-const monthYear = document.getElementById("monthYear");
-const calendarElement = document.getElementById("calendar");
-const timeSelector = document.getElementById("time");
+}
+//filtra los productos por categoria 
+botonesCategorias.forEach(boton => {
+    boton.addEventListener("click", (e) => {
 
-// Variables para el calendario
-let selectedDate = null;
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+        botonesCategorias.forEach(boton => boton.classList.remove("active"));
+        e.currentTarget.classList.add("active");
+
+        if (e.currentTarget.id != "todos") {
+            const productoCategoria = productos.find(producto => producto.categoria_id === e.currentTarget.id);
+            tituloPrincipal.innerText = productoCategoria.categoria_nombre;
+            console.log("ID del botón:", e.currentTarget.id, typeof e.currentTarget.id);
+            const productosBoton = productos.filter(producto => producto.categoria_id === e.currentTarget.id);
+            cargarProductos(productosBoton);
+
+        } else {
+            tituloPrincipal.innerText = "Todos los Servicio";
+            cargarProductos(productos);
+        }
+
+    })
+});
+
+// Cerrar el modal
+document.getElementById("closeModal").onclick = function () {
+    document.getElementById("productModal").style.display = "none";
+};
 
 // Función para generar el calendario
-// Función para generar el calendario (actualizada)
 function generateCalendar() {
     const firstDay = new Date(currentYear, currentMonth, 1);
     const lastDay = new Date(currentYear, currentMonth + 1, 0);
@@ -218,21 +215,25 @@ function generateCalendar() {
         calendarElement.appendChild(emptyCell);
     }
 
-    // Generar los días del mes
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayCell = document.createElement("div");
-        dayCell.textContent = day;
-      
+ // Generar los días del calendario
+for (let day = 1; day <= daysInMonth; day++) {
+    const dayCell = document.createElement("div");
+    dayCell.textContent = day;
 
-        // Añadir evento de clic para seleccionar el día
-        dayCell.addEventListener("click", function() {
-            if (selectedDate) {
-                selectedDate.classList.remove("selected"); // Quitar selección previa
-            }
-            dayCell.classList.add("selected"); // Pintar día seleccionado
-            selectedDate = dayCell; // Actualizar día seleccionado
-        });
+    // Añadir evento de clic para seleccionar el día
+    dayCell.addEventListener("click", function() {
+        if (selectedDate) {
+            selectedDate.classList.remove("selected"); // Quitar selección previa
+        }
+        dayCell.classList.add("selected"); // Pintar día seleccionado
+        selectedDate = dayCell; // Actualizar día seleccionado
 
+        
+        // Llamar a la función para deshabilitar las horas reservadas
+        diaSeleccionado = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        // Formato de fecha "YYYY-MM-DD"
+        loadAvailableHours();  
+    });
         // Resaltar el día de hoy
         const today = new Date();
         if (today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear) {
@@ -290,6 +291,7 @@ saveBtn.addEventListener("click", function() {
     if (selectedDate) {
         const selectedTime = timeSelector.value;
         alert(`Fecha seleccionada: ${selectedDate.textContent}, Hora: ${selectedTime}`);
+
         calendarModal.style.display = "none"; // Oculta el calendario después de guardar
     } else {
         alert("Por favor, selecciona una fecha.");
@@ -302,6 +304,7 @@ saveBtn.addEventListener("click", function() {
         const selectedTime = timeSelector.value;
         const selectedDateStr = `${currentYear}-${currentMonth + 1}-${selectedDate.textContent}`; // Formato de fecha "YYYY-MM-DD"
         console.log(selectedDateStr);
+
         // Datos que se van a enviar a la base de datos
         const turnoData = {
             clienteId: 1, // Reemplazar con el ID real del cliente
@@ -337,3 +340,42 @@ saveBtn.addEventListener("click", function() {
         alert("Por favor, selecciona una fecha.");
     }
 });
+
+const allHours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"]; // Todas las horas posibles
+const timeSelect = document.getElementById("time");
+
+// Función para cargar las horas disponibles
+async function loadAvailableHours() {
+    try {
+        // Obtener las fechas y horas reservadas desde la API
+        const response = await fetch('http://localhost:3000/turnos/reservados');
+        reservedSlots = await response.json(); // Las fechas y horas reservadas de la API
+
+        // Obtener la fecha seleccionada
+      
+        timeSelect.innerHTML = ""; // Limpiar opciones previas
+
+        // Iterar sobre las horas disponibles
+        allHours.forEach(hour => {
+            const option = document.createElement("option");
+            option.value = hour;
+            option.textContent = hour;
+
+            // Deshabilitar las horas reservadas solo para la fecha seleccionada
+            const isReserved = reservedSlots.some(slot => slot.date === diaSeleccionado && slot.hour === hour);
+
+            if (isReserved) {
+                option.disabled = true;
+                option.textContent += " (No disponible)";
+            }
+
+            timeSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error al cargar las horas disponibles:', error);
+    }
+}
+
+// Llamada inicial para cargar las horas dinámicamente
+loadAvailableHours();
+

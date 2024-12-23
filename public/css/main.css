@@ -18,10 +18,17 @@
     font-family: 'Rubik', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6, p, a, input, textarea, ul {
+h1, h2, h3, h5, h6, p, a, input, textarea, ul {
     margin: 0;
     padding: 0;
 }
+
+h4 {
+    color: #333;
+    text-align: center; 
+    margin-bottom: 20px;
+}
+
 
 ul {
     list-style-type: none;
@@ -528,7 +535,8 @@ main {
         transform: translateY(0);
         opacity: 1;
     }
-}/* Estilo para el segundo modal (Calendario) */
+}
+
 /* Estilo para el segundo modal (Calendario) */
 #calendarModal .modal-content {
     background-color: #ffffff;
