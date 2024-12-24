@@ -176,6 +176,24 @@ botonesCategorias.forEach(boton => {
     })
 });
 
+// Referencias a los elementos
+const btnUsuario = document.getElementById('btnUsuario');
+const modalLogin = document.getElementById('modalLogin');
+
+
+// Mostrar el modal al presionar el botón "Usuario"
+btnUsuario.addEventListener('click', () => {
+    modalLogin.style.display = 'flex';
+});
+
+
+// Cerrar el modal si se hace clic fuera del contenido
+window.addEventListener('click', (event) => {
+    if (event.target === modalLogin) {
+        modalLogin.style.display = 'none';
+    }
+});
+
 // Cerrar el modal
 document.getElementById("closeModal").onclick = function () {
     document.getElementById("productModal").style.display = "none";
@@ -283,7 +301,7 @@ closeCalendarModal.addEventListener("click", function() {
 
 // Cerrar el segundo modal con el botón "Cerrar"
 closeCalendarBtn.addEventListener("click", function() {
-    calendarModal.style.display = "none"; // Oculta el calendario
+    window.location.href = "./index.html"; // Redirige al enlace
 });
 
 // Guardar la selección de la fecha y hora
@@ -298,8 +316,20 @@ saveBtn.addEventListener("click", function() {
     }
 });
 
+// Obtener el método de pago seleccionado
+const obtenerMetodoPago = () => {
+    const metodoSeleccionado = document.querySelector('input[name="paymentMethod"]:checked');
+    return metodoSeleccionado ? metodoSeleccionado.value : null;
+};
+
 // Guardar la selección de la fecha y hora
 saveBtn.addEventListener("click", function() {
+    const metodoPagoSeleccionado = obtenerMetodoPago();
+    if (!metodoPagoSeleccionado) {
+        alert("Por favor, seleccione un método de pago.");
+        return; // Detener el envío si no se seleccionó un método
+    }
+
     if (selectedDate) {
         const selectedTime = timeSelector.value;
         const selectedDateStr = `${currentYear}-${currentMonth + 1}-${selectedDate.textContent}`; // Formato de fecha "YYYY-MM-DD"
@@ -311,8 +341,8 @@ saveBtn.addEventListener("click", function() {
             servicioId: productoSeleccionadoId, // Reemplazar con el ID real del servicio
             fecha: selectedDateStr, // Fecha seleccionada
             hora: selectedTime, // Hora seleccionada
-            estado: false, // Estado del turno, false por defecto (puede ser un valor dinámico)
-            metodopago:"mercado"
+            estado: true, // Estado del turno, false por defecto (puede ser un valor dinámico)
+           metodopago: metodoPagoSeleccionado
         };
        
 

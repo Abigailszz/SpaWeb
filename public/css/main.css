@@ -119,6 +119,27 @@ aside {
     transform: rotateZ(90deg);
 }
 
+
+.btnUsuario {
+    padding: 10px 30px;
+    background-color: var(--clr-main);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-flex; /* Permite que se pueda centrar con flexbox */
+    align-items: center; /* Alinea el texto dentro del botón */
+  
+    border: 0;
+   
+ 
+    gap: 1rem;
+    font-weight: 600;
+    padding: 1rem;
+
+  margin-left: 40px;
+}
 .boton-carrito {
     margin-top: 2rem;
 }
@@ -135,10 +156,7 @@ aside {
     color: var(--clr-white);
 }
 
-.texto-footer {
-    color: var(--clr-main-light);
-    font-size: .85rem;
-}
+
 
 main {
     background: rgba(255, 255, 255, 0.8); 
@@ -379,7 +397,15 @@ main {
     .boton-menu.active::after {
         display: none;
     }
+    .btnUsuario {
+        padding: 0.8rem 1.5rem; /* Ajustamos el padding para que se vea bien en pantallas pequeñas */
+        font-size: 0.9rem; /* Reducimos el tamaño de la fuente */
+        
+        box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
 
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--clr-main);
+    }
     main {
         margin: 1rem;
         margin-top: 0;
@@ -432,7 +458,32 @@ main {
         row-gap: 1rem;
     }
     
+ /* Ajustamos el tamaño del modal */
+ #calendarModal .modal-content {
+    width: 90%; /* Aumentamos el tamaño del modal para pantallas pequeñas */
+    padding: 20px; /* Reducimos el padding */
+    margin: 5% auto; /* Ajustamos el margen para pantallas más pequeñas */
+}
 
+/* Ajustamos el calendario */
+#calendar {
+    grid-template-columns: repeat(7, 1fr); /* Mantenemos 7 columnas, pero podemos ajustar la celda si es necesario */
+    gap: 3px; /* Reducimos el gap entre celdas */
+    margin-top: 10px;
+    font-size: 14px; /* Reducimos el tamaño de la fuente para adaptarse mejor */
+}
+
+/* Celdas del calendario */
+#calendar div {
+    padding: 8px; /* Reducimos el padding en las celdas */
+}
+
+/* Botones del modal */
+#calendarModal button {
+    padding: 8px 16px; /* Reducimos el padding de los botones */
+    font-size: 14px; /* Reducimos el tamaño de la fuente de los botones */
+    margin: 5px;
+}
 }
 
 
@@ -667,4 +718,40 @@ main {
     transition: background 0.3s ease, border-color 0.3s ease;
 }
 
+
+
+
+/* Estilos para el modal */
+#modalLogin {
+    display: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+
+    align-items: center;
+}
+
+/* Contenedor del contenido del modal */
+#modalLogin > div {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+}
+
+
+/* Estilos para los campos del formulario */
+#modalLogin input[type="text"],
+#modalLogin input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
 
