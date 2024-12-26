@@ -80,12 +80,10 @@ app.get('/turnos/reservados', (req, res) => {
 
     db.query(query, (err, results) => {
         if (err) {
-            console.error('Error al realizar la consulta:', err);
             return res.status(500).json({ message: 'Error al obtener los turnos disponibles' });
         }
 
         if (results.length === 0) {
-            console.log('No se encontraron turnos disponibles.');
             return res.json([]); // Devuelve un array vacío si no hay resultados
         }
 
@@ -95,9 +93,32 @@ app.get('/turnos/reservados', (req, res) => {
             const hour = turno.hora.split(':')[0] + ":" + turno.hora.split(':')[1];  // Formato HH:mm
             return { date: date.toISOString().split('T')[0], hour }; // Devuelve solo la fecha (YYYY-MM-DD) y la hora (HH:mm)
         });
-
-        console.log('Turnos reservados:', reservedSlots);
         res.json(reservedSlots); // Devuelve las fechas y horas reservadas
+    });
+});
+
+// Ruta para verificar el rol del usuario
+app.post('/personal/verificar-rol', (req, res) => {
+    const { username, password } = req.body; // Obtener username y password del cuerpo de la solicitud
+
+    const query = 'SELECT rol FROM personal WHERE usuario = ? AND contraseña= ?'; // O usar el campo adecuado para la verificación
+    db.query(query, [username, password], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al verificar el usuario' });
+        }
+
+        if (results.length > 0) {
+            const user = results[0];
+            // Si el rol es "administrador", enviamos true, sino false
+            if (user.rol === 'administrador') {
+                res.json({ rol: 'administrador' });
+            } else {
+                res.json({  rol: 'usuario' });
+            }
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado o contraseña incorrecta' });
+        }
     });
 });
 
