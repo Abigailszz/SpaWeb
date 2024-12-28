@@ -41,7 +41,22 @@
     }
     
 
-
+       
+    document.addEventListener("DOMContentLoaded", () => {
+        const tituloPrincipal = document.getElementById('titulo-principal');
+    
+        // Inicializar el título principal como "Servicios activos"
+        tituloPrincipal.textContent = "Servicios activos";
+    
+        // Mostrar el contenedor dinámico y cargar servicios activos
+        actualizarVisibilidad();
+        obtenerProductos(); // Llama a la función para cargar servicios activos
+    
+   
+        // Función para obtener productos desde la API
+ 
+    });
+    
     // Llamada a la función para cargar los productos al iniciar
     obtenerProductos();
     const dynamicContainer = document.getElementById('dynamic-container');

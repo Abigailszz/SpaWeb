@@ -181,10 +181,6 @@ const btnUsuario = document.getElementById('btnUsuario');
 const modalLogin = document.getElementById('modalLogin');
 
 
-// Mostrar el modal al presionar el botón "Usuario"
-btnUsuario.addEventListener('click', () => {
-    modalLogin.style.display = 'flex';
-});
 
 
 // Cerrar el modal si se hace clic fuera del contenido
@@ -439,4 +435,12 @@ document.querySelector('form').addEventListener('submit', async function (e) {
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
     }
+});
+document.getElementById('btnUsuario').addEventListener('click', function () {
+    const modalLogin = document.getElementById('modalLogin');
+    modalLogin.style.display = 'block';
+});
+document.querySelector('.modal-content .close')?.addEventListener('click', function () {
+    const modalLogin = document.getElementById('modalLogin');
+    modalLogin.style.display = 'none';
 });
