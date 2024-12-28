@@ -38,6 +38,22 @@ app.get('/productos', (req, res) => {
         res.json(results);
     });
 });
+
+app.get('/productos/inactivo', (req, res) => {
+    const query = 'SELECT * FROM productos WHERE estado = ?';
+    db.query(query, [0], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al obtener los productos inactivos' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron productos inactivos' });
+        }
+        res.json(results);
+    });
+});
+
+
 // Ruta para obtener la información de un producto por su ID
 app.get('/productos/:id', (req, res) => {
     const { id } = req.params;
@@ -71,6 +87,7 @@ app.post('/turnos/guardar-turno', (req, res) => {
         }
     });
 });
+
 app.get('/turnos/reservados', (req, res) => {
     const query = `
         SELECT fecha, hora 
@@ -121,6 +138,13 @@ app.post('/personal/verificar-rol', (req, res) => {
         }
     });
 });
+
+
+// Ruta para obtener productos con estado 0
+// Ruta para obtener productos inactivos (estado = 0)
+
+
+
 
 
 const port = 3000;

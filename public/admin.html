@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentirse Bienp</title>
+    <title>Sentirse Bien</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-
     <div class="wrapper">
+        <!-- Encabezado -->
         <header class="header-mobile">
             <h1 class="logo">Sentirse Bien</h1>
             <button class="open-menu" id="open-menu">
                 <i class="bi bi-list"></i>
             </button>
         </header>
+
+        <!-- Menú lateral -->
         <aside>
             <button class="close-menu" id="close-menu">
                 <i class="bi bi-x"></i>
@@ -28,55 +30,51 @@
             <nav>
                 <ul class="menu">
                     <li>
-                        <button id="servicios" class="boton-menu boton-admin active"><i class="bi bi-hand-index-thumb-fill"></i> Todos los servicios</button>
+                        <button id="servicios-activos" class="boton-menu boton-admin active"><i class="bi bi-hand-index-thumb-fill"></i> Servicios activos</button>
                     </li>
                     <li>
-                        <button id="servicios-inactivos" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>Servicios inactivos</button>
+                        <button id="servicios-inactivos" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Servicios inactivos</button>
                     </li>
                     <li>
-                        
-                        <button id="turnos" class="boton-menu boton-admin"><i class="bi bi-hand-index-thumb"></i>Turnos</button>
+                        <button id="turnos" class="boton-menu boton-admin"><i class="bi bi-hand-index-thumb"></i> Turnos</button>
                     </li>
                     <li>
                         <button id="solicitud-turno" class="boton-menu boton-admin"><i class="bi bi-hand-index-thumb"></i> Solicitud Turno</button>
                     </li>
-                    
-
-  
                 </ul>
             </nav>
             <footer>
-           <a href="./index.html"><button id="btnSalir" class="btnUsuario" >  <i class="bi bi-box-arrow-left"></i>   Salir
-        </button></a>
-                
+                <a href="./index.html">
+                    <button id="btnSalir" class="btnUsuario"><i class="bi bi-box-arrow-left"></i> Salir</button>
+                </a>
             </footer>
-            
         </aside>
-        
+
+        <!-- Contenido principal -->
         <main>
-            <h2 class="titulo-principal" id="titulo-principal">Todos los Servicios</h2>
-            <div id="contenedor-productos" class="contenedors">
-                <div id="contenedorProductos"></div>
-
-                <script>
-                    // Función para cargar productos con diseño actualizado
-    
-                </script>
-                
-
+            <h2 class="titulo-principal" id="titulo-principal">Servicios activos</h2>
+         
+            <div id="dynamic-container" style="display: none;">
+                <!-- Barra de acciones -->
+                <div class="action-bar">
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Buscar servicios..." onkeyup="filterServices()" />
+                        <button type="button" class="search-button"><i class="bi bi-search"></i></button>
+                    </div>
+                    <button class="create-service-button" onclick="createService()">Crear Servicio</button>
+                </div>
+                  
+                <!-- Contenedor de productos -->
+                <div id="contenedor-productos" class="contenedors">
+                    <div id="contenedorProductos"></div>
+                </div>
             </div>
         </main>
     </div>
 
-
+    <!-- Scripts -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
-    
-  
-    
-    
     <script src="./js/menu.js"></script>
-    
     <script src="./js/administrador.js"></script>
 </body>
 </html>
