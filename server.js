@@ -39,6 +39,49 @@ app.get('/productos', (req, res) => {
     });
 });
 
+app.get('/soliTurnos', (req, res) => {
+    const query = `
+         SELECT CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente , productos.titulo AS servicio, solicitudturnos.dia,solicitudturnos.hora, solicitudturnos.metodo_pago
+        FROM solicitudturnos
+        INNER JOIN productos ON solicitudturnos.id_servicio = productos.id INNER JOIN clientes ON solicitudturnos.id_cliente=clientes.id
+    `;
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al obtener los turnos con el nombre del servicio' });
+        }
+        res.json(results);
+    });
+});
+
+// Ruta para obtener productos
+app.get('/turnos', (req, res) => {
+    const query = 'SELECT * FROM turnos';
+    db.query(query, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+// Ruta para obtener los turnos con el nombre del servicio en lugar del número
+app.get('/nombreCliente-Servicio', (req, res) => {
+    const query = `
+         SELECT CONCAT(clientes.nombre, ' ', clientes.apellido) AS cliente , productos.titulo AS servicio, turnos.fecha,turnos.hora, turnos.estado
+        FROM turnos
+        INNER JOIN productos ON turnos.id_servicio = productos.id INNER JOIN clientes ON turnos.id_cliente=clientes.id
+    `;
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al obtener los turnos con el nombre del servicio' });
+        }
+        res.json(results);
+    });
+});
+
+
+
+
+
 app.get('/productos/inactivo', (req, res) => {
     const query = 'SELECT * FROM productos WHERE estado = ?';
     db.query(query, [0], (err, results) => {
@@ -53,6 +96,19 @@ app.get('/productos/inactivo', (req, res) => {
     });
 });
 
+app.get('/productos/activos', (req, res) => {
+    const query = 'SELECT * FROM productos WHERE estado = ?';
+    db.query(query, [1], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error al obtener los productos activoss' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron productos activos' });
+        }
+        res.json(results);
+    });
+});
 
 // Ruta para obtener la información de un producto por su ID
 app.get('/productos/:id', (req, res) => {
@@ -140,8 +196,6 @@ app.post('/personal/verificar-rol', (req, res) => {
 });
 
 
-// Ruta para obtener productos con estado 0
-// Ruta para obtener productos inactivos (estado = 0)
 
 
 

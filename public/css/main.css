@@ -884,7 +884,7 @@ main {
         }
         
         /* Input field styling */
-        #search-input {
+        #search-input, .search-bar input{
             width: 100%; /* Adjust the width to fill available space */
             max-width: 400px; /* Max width for the input field */
             padding: 10px 15px;
@@ -956,3 +956,166 @@ main {
        
     }
 }
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 20px auto;
+    max-width: 900px;
+}
+
+.calendar-wrapper {
+    flex: 1; /* Ocupa una proporción del espacio disponible */
+    max-width: 400px; /* Ajusta el ancho del calendario si es necesario */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.turnos-container {
+    flex: 1; /* Ocupa el doble de espacio que el calendario */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(225, 155, 155, 0.1);
+}
+
+
+#calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.month-button {
+    background: linear-gradient(to right, rgb(254, 140, 140), rgb(245, 170, 188));
+    border: none;
+    border-radius: 50%;
+    padding: 10px 15px;
+    color:white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.month-button:hover {
+   
+    transform: scale(1.1);
+}
+
+.calendar-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+#days-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day-button {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.day-button.has-turnos {
+   color: #f77275;
+    background-color: #ffffff;
+    border-color: #f77275;
+}
+
+.day-button:hover {
+    background-color:#f77275;
+    color: #ffffff;
+}
+
+.day-button:focus {
+    background-color: #ff85a1;
+    color: #fff;
+    outline: none;
+}
+
+.empty-cell {
+    visibility: hidden;
+}
+
+.turnos-container {
+    margin-top:20px;
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.search-bar {
+    margin-bottom: 15px;
+}
+
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    color:white;
+    background-color: #f77275;
+}
+.cancelar-button {
+    background-color: #f77275; /* Fondo inicial */
+    color: white; /* Color de texto inicial */
+    border: 2px solid transparent; /* Borde transparente por defecto */
+    padding: 5px 10px; /* Espaciado interno */
+    border-radius: 20px; /* Bordes redondeados */
+    font-size: 15px; /* Tamaño del texto */
+    display: flex; /* Alineación para ícono y texto */
+    align-items: center; 
+    gap: 8px; /* Espaciado entre ícono y texto */
+    cursor: pointer; /* Indica que es clicable */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.cancelar-button i {
+    font-size: 20px; /* Tamaño del ícono */
+}
+
+.cancelar-button:hover {
+    background-color: #ffffff; /* Fondo blanco al pasar el cursor */
+    border-color: #f77275; /* Borde visible al pasar el cursor */
+    color: #f77275; /* Texto e ícono en color principal */
+    transform: scale(1.05); /* Efecto de agrandamiento */
+}
+
+.cancelar-button:focus {
+    outline: none; /* Elimina el borde por defecto del navegador */
+    box-shadow: 0 0 5px #f77275; /* Sombra suave al enfocar */
+}
+
