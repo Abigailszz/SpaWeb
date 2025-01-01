@@ -5,6 +5,7 @@ const turnosContainer = document.querySelector('.turnos-container');
 const dynamicContainer = document.getElementById('dynamic-container');
 const contenedorProductos = document.getElementById('contenedor-productos');
 const createServiceButton = document.querySelector(".create-service-button");
+const solicitudTurnos = document.querySelector('.solicitud-Turnos');
 
        
 document.addEventListener("DOMContentLoaded", () => {
@@ -54,19 +55,26 @@ document.addEventListener("DOMContentLoaded", () => {
             dynamicContainer.style.display = "block"; // Muestra el bloque
             contenedorProductos.style.display = "block"; // Asegúrate de mostrar el contenedor de productos
             createServiceButton.style.display = "inline-block"; // Muestra el botón de "Crear Servicio"
+            solicitudTurnos.style.display = 'none';
         } else if (tituloPrincipal.textContent.trim() === "Servicios inactivos") {
             dynamicContainer.style.display = "block"; // Muestra el bloque
             contenedorProductos.style.display = "block"; // Asegúrate de mostrar el contenedor de productos
             createServiceButton.style.display = "none"; // Oculta el botón de "Crear Servicio"
+            solicitudTurnos.style.display = 'none';
         }else if (tituloPrincipal.textContent.trim() === "Turnos"){
             calendarWrapper.style.display = 'block';
+            solicitudTurnos.style.display = 'none';
             turnosContainer.style.display = 'block';
             dynamicContainer.style.display = "none"; // Muestra el bloque
             contenedorProductos.style.display = "none"; // Asegúrate de mostrar el contenedor de productos
             createServiceButton.style.display = "none"; // Muestra el botón de "Crear Servicio"
-        }else{
-            dynamicContainer.style.display = "none"; // Oculta el bloque
+        }else if  (tituloPrincipal.textContent.trim() === "Solicitud Turno"){
+            solicitudTurnos.style.display = 'block';
+            calendarWrapper.style.display = 'none';
+            turnosContainer.style.display = 'none';
+            dynamicContainer.style.display = "none"; // Muestra el bloque
             contenedorProductos.style.display = "none"; // Asegúrate de mostrar el contenedor de productos
+            createServiceButton.style.display = "none"; // Muestra el botón de "Crear Servicio"
         }
   
     }
@@ -94,6 +102,9 @@ menuItems.forEach((boton) => {
             actualizarVisibilidad();
             inicializarTurnos();
            
+        }else if (titulo === "Solicitud Turno"){
+            actualizarVisibilidad();
+            TurnosSolicitados(); 
         }
     });
 });    
@@ -119,9 +130,49 @@ async function obtenerServiciosActivos() {
         console.error('Error:', error);
     }
 }
+async function TurnosSolicitados() {
+    try {
+        const response = await fetch('/soliTurnos'); // Ajusta la URL según tu API
+        if (!response.ok) throw new Error("Error al obtener turnos solicitados");
+
+        const turnosData = await response.json();
+        const turnosSoliTable = document.getElementById('turnos-soli');
+
+        turnosSoliTable.innerHTML = ""; // Limpiar la tabla antes de cargar nuevos datos
+        
+
+        if (turnosData.length === 0) {
+            turnosSoliTable.innerHTML = "<tr><td colspan='6'>No hay turnos solicitados</td></tr>";
+        } else {
+            turnosData.forEach(turno => {
+                     // Formatear la fecha
+                     const fecha = new Date(turno.dia);
+                     const dia = fecha.getDate().toString().padStart(2, '0');
+                     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Los meses van de 0 a 11
+                     const año = fecha.getFullYear();
+                     const fechaFormateada = `${dia}/${mes}/${año}`;
+                const turnoRow = document.createElement('tr');
+                turnoRow.innerHTML = `
+                    <td>${turno.cliente}</td>
+                    <td>${turno.servicio}</td>
+                    <td>${fechaFormateada}</td>
+                    <td>${turno.hora}</td>
+                    <td>${turno.metodo_pago}</td>
+                    <td data-label="Acciones" class="acciones">
+                        <button class='aceptar'><i class="bi bi-calendar2-check"></i> Aceptar</button>
+                        
+                        <button class='rechazar'><i class="bi bi-calendar-x-fill"></i> Rechazar</button>
+                    </td>
+                `;
+                turnosSoliTable.appendChild(turnoRow);
+            });
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 
 function inicializarTurnos() {
-    const calendarHeader = document.getElementById("calendar-header");
     const daysContainer = document.getElementById("days-container");
     const currentMonthElement = document.getElementById("current-month");
     const turnosContainer = document.querySelector(".turnos-container");
@@ -207,7 +258,8 @@ function inicializarTurnos() {
                             <td>${turno.servicio}</td>
                             <td>${turno.hora}</td>
                             <td>${turno.estado === 1 ? "Confirmado" : "Cancelado"}</td>
-                            <td><button class='cancelar-button'>Cancelar</button></td>
+                            
+                            <td> <button class='rechazar'><i class="bi bi-calendar-x-fill"></i> Cancelar</button></td>
                         `;
                         turnosList.appendChild(turnoRow);
                     });

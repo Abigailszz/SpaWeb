@@ -1056,7 +1056,7 @@ main {
     visibility: hidden;
 }
 
-.turnos-container {
+.turnos-container,  .solicitud-Turnos{
     margin-top:20px;
     flex: 1;
     padding: 20px;
@@ -1067,7 +1067,7 @@ main {
     font-family: Arial, sans-serif;
 }
 
-.search-bar {
+.search-bar  {
     margin-bottom: 15px;
 }
 
@@ -1092,7 +1092,7 @@ th {
 .cancelar-button {
     background-color: #f77275; /* Fondo inicial */
     color: white; /* Color de texto inicial */
-    border: 2px solid transparent; /* Borde transparente por defecto */
+ border: 2px solid transparent; /* Borde transparente por defecto */
     padding: 5px 10px; /* Espaciado interno */
     border-radius: 20px; /* Bordes redondeados */
     font-size: 15px; /* Tamaño del texto */
@@ -1119,3 +1119,82 @@ th {
     box-shadow: 0 0 5px #f77275; /* Sombra suave al enfocar */
 }
 
+
+/* Botón "Aceptar" */
+button.aceptar {
+    background-color: white; /* Fondo blanco */
+    color: #4caf50; /* Texto verde */
+    border: 2px solid #4caf50; /* Borde verde */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Suavizar la transición */
+    font-size: 14px;
+}
+
+button.aceptar:hover {
+    background-color: #4caf50; /* Fondo verde */
+    color: white; /* Texto blanco */
+}
+
+/* Botón "Rechazar" */
+button.rechazar {
+    background-color: white; /* Fondo blanco */
+    color: #f44336; /* Texto rojo */
+    border: 2px solid #f44336; /* Borde rojo */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Suavizar la transición */
+    font-size: 14px;
+}
+
+button.rechazar:hover {
+    background-color: #f44336; /* Fondo rojo */
+    color: white; /* Texto blanco */
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        flex-wrap: wrap; /* Los elementos se reorganizan en pantallas medianas */
+    }
+
+    .calendar-wrapper, .turnos-container {
+        max-width: 100%; /* Usar todo el ancho disponible */
+    }
+}
+
+
+
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+    td {
+        display: block; /* Cada celda ocupa el ancho completo */
+        text-align: left;
+    }
+
+    td.acciones {
+        display: flex;
+        justify-content: space-between; /* Espaciado horizontal en pantallas pequeñas */
+    }
+
+    tr {
+        display: flex;
+        flex-direction: column; /* Cada fila será vertical */
+        margin-bottom: 15px; /* Separación entre filas */
+        border-bottom: 1px solid #ddd; /* Línea divisoria */
+    }
+
+    th {
+        display: none; /* Oculta los encabezados de la tabla */
+    }
+
+  
+
+    button.aceptar, button.rechazar {
+        width: 100%; /* Botones apilados y a lo ancho */
+        margin-top: 5px;
+        margin-right: 6px;
+    }
+}
